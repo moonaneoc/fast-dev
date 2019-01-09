@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+const program = require("commander");
+const { version } = require("../package.json");
+
+program
+    .version(version, '-v,--version');
+
+program
+    .command("server [entry]")
+    .description("startup a webpack-dev-server")
+    .action(async function (entry) {
+        require("../lib/server")(entry);
+    });
+
+program
+    .command("build")
+    .description("build project")
+    .action(async function (options) {
+        require("../lib/build")(options);
+    });
+
+program.parse(process.argv);
