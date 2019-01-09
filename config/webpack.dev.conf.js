@@ -26,7 +26,12 @@ function cssLoaders(options) {
     const postcssLoader = {
         loader: 'postcss-loader',
         options: {
-            sourceMap: options.sourceMap
+            sourceMap: options.sourceMap,
+            plugins: [
+                require("postcss-import")(),
+                require("postcss-url")(),
+                require("autoprefixer")()
+            ]
         }
     }
 
@@ -118,7 +123,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         // https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: 'index.html',
+            template: path.resolve(__dirname, '..', 'index.html'),
             inject: true
         }),
     ]
@@ -130,7 +135,6 @@ module.exports = new Promise((resolve, reject) => {
         if (err) {
             reject(err)
         } else {
-            // publish the new Port, necessary for e2e tests
             process.env.PORT = port
             // add port to devServer config
             devWebpackConfig.devServer.port = port
@@ -141,6 +145,7 @@ module.exports = new Promise((resolve, reject) => {
                     messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
                 },
                 onErrors: function (severity, errors) {
+                    console.log("?????????", errors)
                     if (severity !== 'error') return
 
                     const error = errors[0]

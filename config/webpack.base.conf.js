@@ -11,9 +11,8 @@ function assetsPath(_path) {
 
   return path.posix.join(assetsSubDirectory, _path)
 }
-
 module.exports = {
-  context: path.resolve(__dirname, '..'),
+  context: path.resolve(__dirname, '..', "node_modules"),
   entry: {
     app: path.resolve(process.env.entry || 'index.js')
   },
@@ -22,11 +21,21 @@ module.exports = {
     filename: '[name].js'
   },
   resolve: {
+    modules: [
+      "node_modules",
+      path.resolve(__dirname, "..", "node_modules")
+    ],
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
     }
+  },
+  resolveLoader: {
+    modules: [
+      "node_modules",
+      path.resolve(__dirname, "..", "node_modules")
+    ]
   },
   module: {
     rules: [
@@ -37,7 +46,7 @@ module.exports = {
       }, {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+        include: [path.resolve('src'), path.resolve('test'), resolve('node_modules/webpack-dev-server/client')]
       }, {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
