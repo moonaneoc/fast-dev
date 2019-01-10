@@ -1,0 +1,8 @@
+#！/bin/bash
+
+basepath=$(cd `dirname $0`;cd ../lib/node_modules/fast-dev;pwd)
+
+server=${basepath}/node_modules/.bin/webpack-dev-server
+config=${basepath}/config/webpack.dev.conf.js
+
+${server} --inline --progress --config ${config}
