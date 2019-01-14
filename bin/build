@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+const program = require("commander");
+const { version } = require("../package.json");
+
+program
+    .version(version, '-v,--version')
+    .action(async function (type, options) {
+        if (typeof options === "undefined") {
+            options = Object.assign({}, type);
+            type = null;
+        } else if (typeof options === "string") {
+            return console.log("params error.");
+        }
+        var config = Object.prototype.hasOwnProperty.call(options, "config") ? options.config : null;
+        require("../lib/build")(type, config);
+    });
+
+// program
+//     .command("dev [entry]")
+//     .description("startup a webpack-dev-server")
+//     .action(async function (entry) {
+//         require("../lib/server")(entry);
+//     });
+
+// program
+//     .command("[type]")
+//     .description("build project")
+//     .option('-c, --config <file>', 'webpack config file')
+//     .action(async function (type, options) {
+//         var config = Object.prototype.hasOwnProperty.call(options, "config") ? options.config : null;
+//         require("../lib/build")(type, config);
+//     });
+
+program.parse(process.argv);

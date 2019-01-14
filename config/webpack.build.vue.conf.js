@@ -9,6 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -30,6 +31,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       'process.env': {
         NODE_ENV: '"production"'
       }
+    }),
+    new CleanWebpackPlugin([path.resolve("dist")], {
+      root: path.resolve()
     }),
     new UglifyJsPlugin({
       uglifyOptions: {

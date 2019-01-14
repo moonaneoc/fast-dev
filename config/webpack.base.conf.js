@@ -7,11 +7,14 @@ function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-module.exports = {
+var packageConfig = {};
+try {
+  packageConfig = require(path.resolve('./package.json'));
+} catch (e) { }
+
+var baseConfig = {
   context: path.resolve(__dirname, '..', "node_modules"),
-  entry: {
-    app: path.resolve(process.env.entry || 'index.js')
-  },
+  entry: {},
   output: {
     path: path.resolve("dist"),
     filename: '[name].js'
@@ -76,3 +79,7 @@ module.exports = {
     child_process: 'empty'
   }
 }
+
+baseConfig.entry[packageConfig.__package__name || "app"] = path.resolve(process.env.entry || '');
+
+module.exports = baseConfig
