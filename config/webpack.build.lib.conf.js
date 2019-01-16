@@ -23,7 +23,8 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: false,
   output: {
     path: path.resolve("dist"),
-    filename: '[name].min.js'
+    filename: '[name].min.js',
+    libraryTarget: "commonjs2"
   },
   target: 'node', // in order to ignore built-in modules like path, fs, etc.
   externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
