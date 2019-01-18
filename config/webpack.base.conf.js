@@ -80,6 +80,6 @@ var baseConfig = {
   }
 }
 
-baseConfig.entry[packageConfig.__package__name || "app"] = path.resolve(process.env.entry || '');
+baseConfig.entry[packageConfig.__package__name || "app"] = path.resolve(packageConfig.__package__entry || '');
 
 module.exports = baseConfig

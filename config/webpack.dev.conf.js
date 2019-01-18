@@ -7,11 +7,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 const notifier = require('node-notifier')
-const packageConfig = require('../package.json')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 const utils = require("./utils.js")
+
+var packageConfig = {};
+try {
+    packageConfig = require(path.resolve('./package.json'));
+} catch (e) { }
+var template = packageConfig.__package__platform === "mobile" ? path.resolve(__dirname, '..', 'template', 'mobile.html') : path.resolve(__dirname, '..', 'template', 'pc.html');
 
 const devWebpackConfig = merge(baseWebpackConfig, {
     module: {
@@ -49,7 +54,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         // https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: path.resolve(__dirname, '..', 'index.html'),
+            template: template,
             inject: true
         }),
     ]
@@ -77,7 +82,7 @@ module.exports = new Promise((resolve, reject) => {
                     const filename = error.file && error.file.split('!').pop()
 
                     notifier.notify({
-                        title: packageConfig.name,
+                        title: "fast-dev",
                         message: severity + ': ' + error.name,
                         subtitle: filename || ''
                     })

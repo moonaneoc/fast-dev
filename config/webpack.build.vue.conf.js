@@ -11,6 +11,12 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
+var packageConfig = {};
+try {
+  packageConfig = require(path.resolve('./package.json'));
+} catch (e) { }
+var template = packageConfig.__package__platform === "mobile" ? path.resolve(__dirname, '..', 'template', 'mobile.html') : path.resolve(__dirname, '..', 'template', 'pc.html');
+
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
@@ -62,8 +68,8 @@ const webpackConfig = merge(baseWebpackConfig, {
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: path.resolve("dist", "index.html"),
-      template: path.resolve(__dirname, '..', 'index.html'),
+      filename: "index.html",
+      template: template,
       inject: true,
       minify: {
         removeComments: true,
