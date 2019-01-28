@@ -5,17 +5,14 @@ const { version } = require("../package.json");
 
 program
     .version(version, '-v,--version')
-    .option('-c, --config <file>', 'merge your webpack config file')
     .action(async function (type, options) {
-        // return console.log(options, type)
         if (typeof options === "undefined") {
             options = Object.assign({}, type);
             type = null;
         } else if (typeof options === "string") {
             return console.log("params error.");
         }
-        var config = Object.prototype.hasOwnProperty.call(options, "config") ? options.config : null;
-        require("../lib/build")(type, config);
+        require("../lib/build")(type);
     });
 
 program.parse(process.argv);

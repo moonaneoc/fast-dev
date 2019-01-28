@@ -3,18 +3,11 @@ const path = require('path')
 const vueLoaderConfig = require('./vue-loader.conf')
 const utils = require("./utils")
 
-function resolve(dir) {
-  return path.join(__dirname, '..', dir)
-}
-
-var packageConfig = {};
-try {
-  packageConfig = require(path.resolve('./package.json'));
-} catch (e) { }
-
 var baseConfig = {
   context: path.resolve(__dirname, '..', "node_modules"),
-  entry: {},
+  entry: {
+    app: path.resolve()
+  },
   output: {
     path: path.resolve("dist"),
     filename: '[name].js'
@@ -45,7 +38,7 @@ var baseConfig = {
       }, {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [path.resolve('src'), path.resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+        include: [path.resolve('src'), path.resolve('test'), path.join(__dirname, '..', 'node_modules/webpack-dev-server/client')]
       }, {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
@@ -80,6 +73,17 @@ var baseConfig = {
   }
 }
 
-baseConfig.entry[packageConfig.__package__name || "app"] = path.resolve(packageConfig.__package__entry || '');
+const config = utils.loadConfig();
+if (config.entry) {
+  if (typeof config.entry === "string") baseConfig.entry = path.resolve(config.entry);
+  else {
+    var entry = {};
+    for (var k in config.entry) {
+      if (!Object.prototype.hasOwnProperty.call(config.entry, k)) continue;
+      entry[k] = path.resolve(config.entry[k]);
+    }
+    baseConfig.entry = entry;
+  }
+}
 
 module.exports = baseConfig

@@ -78,3 +78,38 @@ exports.styleLoaders = function (options) {
 
     return output
 }
+
+exports.loadConfig = function () {
+    var config = {};
+    try {
+        config = require(path.resolve(".fastdev"));
+    } catch (e) { }
+    return config;
+}
+
+exports.htmlConfig = function () {
+    var template = exports.loadConfig().template || {};
+
+    var config = {
+        title: template.title || "fast-dev",
+        filename: template.filename || 'index.html',
+        template: typeof template === "string" ? path.resolve(template) : path.resolve(__dirname, "..", "template/index.ejs"),
+        inject: true,
+        platform: template.platform || "pc",
+        assets: {
+            js: template.js || [],
+            css: template.css || []
+        }
+    }
+
+    if (process.env.NODE_ENV === "production") {
+        config.minify = {
+            removeComments: true,
+            collapseWhitespace: true,
+            removeAttributeQuotes: true
+        }
+        // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+        config.chunksSortMode = 'dependency';
+    }
+    return config;
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <% if(htmlWebpackPlugin.options.platform === "mobile") { %>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <% } %>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <% for(var css of htmlWebpackPlugin.options.assets.css){ %><link rel="stylesheet" href="<%= css %>" /><% } %>
+    <% for(var js of htmlWebpackPlugin.options.assets.js){ %><script src="<%= js %>" /><% } %>
+</body>
+
+</html>

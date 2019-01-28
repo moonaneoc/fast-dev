@@ -1,6 +1,6 @@
 {
   "name": "fast-dev",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "startup webpack-dev-server and build",
   "main": "index.js",
   "bin": {

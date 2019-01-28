@@ -12,11 +12,11 @@ const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 const utils = require("./utils.js")
 
-var packageConfig = {};
-try {
-    packageConfig = require(path.resolve('./package.json'));
-} catch (e) { }
-var template = packageConfig.__package__platform === "mobile" ? path.resolve(__dirname, '..', 'template', 'mobile.html') : path.resolve(__dirname, '..', 'template', 'pc.html');
+// var packageConfig = {};
+// try {
+//     packageConfig = require(path.resolve('./package.json'));
+// } catch (e) { }
+// var template = packageConfig.__package__platform === "mobile" ? path.resolve(__dirname, '..', 'template', 'mobile.ejs') : path.resolve(__dirname, '..', 'template', 'pc.ejs');
 
 const devWebpackConfig = merge(baseWebpackConfig, {
     module: {
@@ -52,11 +52,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
         new webpack.NoEmitOnErrorsPlugin(),
         // https://github.com/ampedandwired/html-webpack-plugin
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: template,
-            inject: true
-        }),
+        new HtmlWebpackPlugin(utils.htmlConfig()),
     ]
 })
 

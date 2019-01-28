@@ -4,18 +4,16 @@ const utils = require('./utils')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+// const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
-var packageConfig = {};
-try {
-  packageConfig = require(path.resolve('./package.json'));
-} catch (e) { }
-var template = packageConfig.__package__platform === "mobile" ? path.resolve(__dirname, '..', 'template', 'mobile.html') : path.resolve(__dirname, '..', 'template', 'pc.html');
+var config = utils.loadConfig();
+var output = config.output || {};
+output.path = path.resolve(typeof output.path === 'string' ? output.path : "dist");
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -27,7 +25,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   devtool: '#source-map',
   output: {
-    path: path.resolve('dist'),
+    path: output.path,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
@@ -38,7 +36,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         NODE_ENV: '"production"'
       }
     }),
-    new CleanWebpackPlugin([path.resolve("dist")], {
+    new CleanWebpackPlugin([output.path], {
       root: path.resolve()
     }),
     new UglifyJsPlugin({
@@ -67,20 +65,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: "index.html",
-      template: template,
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
-      },
-      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
-    }),
+    new HtmlWebpackPlugin(utils.htmlConfig()),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting

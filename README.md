@@ -13,7 +13,7 @@ enter the working directory and start a webpack-dev-server
 $ dev
 ```
 
-build library
+build a library
 
 ```
 $ build
@@ -24,18 +24,46 @@ build vue project
 $ build vue
 ```
 
-merge your webpack config
+## more configuration
+Create a new file in your working directory named '.fastdev.js' if you need more configuration.
 
-```
-$ build -c <config>
-```
-
-configure package.json
 ```js
-{
-    ...
-    "__package__name": "name", // filename of library, default 'app'.
-    "__package__entry": "your-entry.js", // project entry. not necessary.
-    "__package__platform": "mobile", // 'mobile' or 'pc', default 'pc'. If you're building a library,ignore this.
+// .fastdev.js
+
+module.exports = {
+    /**
+     * Type: String || Object
+     * Default: the 'main' field of package.json or 'index.js'
+     *
+     * The path is relative to your working directory.
+     * Refer to the entry of webpack.
+     */
+    entry: {
+        app: "index.js" // example
+    },
+
+    /**
+     * Type: Object
+     * 
+     * The path is relative to your working directory.
+     */
+    output: {
+        path: "dist", // default: "dist"
+        filename: "[name].min.js", // Effective only when building a library. Default: "[name].min.js"
+        libraryTarget: "commonjs2" // Effective only when building a library. Default: "commonjs2"
+    },
+
+    /**
+     * Type: String || Object
+     * 
+     * Pass a string path if you need to use your HTML template.
+     * The path is relative to your working directory.
+     */
+    template: {
+        title: "fast-dev", // html title. Default: 'fast-dev'
+        platform: "pc", // Set it to 'mobile' to add <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">.
+        js: ["library.js", ...], // Add <script src="library.js" />
+        css: ["cssAssets.css", ...] // Add <link rel="stylesheet" href="cssAssets.css" />
+    }
 }
 ```
