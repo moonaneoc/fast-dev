@@ -12,12 +12,6 @@ const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 const utils = require("./utils.js")
 
-// var packageConfig = {};
-// try {
-//     packageConfig = require(path.resolve('./package.json'));
-// } catch (e) { }
-// var template = packageConfig.__package__platform === "mobile" ? path.resolve(__dirname, '..', 'template', 'mobile.ejs') : path.resolve(__dirname, '..', 'template', 'pc.ejs');
-
 const devWebpackConfig = merge(baseWebpackConfig, {
     module: {
         rules: utils.styleLoaders({ sourceMap: true, usePostCSS: true })

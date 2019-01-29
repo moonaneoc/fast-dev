@@ -1,7 +1,7 @@
 {
   "name": "fast-dev",
   "version": "1.0.0",
-  "description": "startup webpack-dev-server and build",
+  "description": "A command-line tool to start webpack-dev-server and build",
   "main": "index.js",
   "bin": {
     "dev": "./bin/dev",

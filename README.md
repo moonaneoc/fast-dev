@@ -7,10 +7,14 @@ $ npm install fast-dev -g
 ```
 ## Usage
 
-enter the working directory and start a webpack-dev-server
+Enter the working directory and start a webpack-dev-server
 
 ```
 $ dev
+```
+Specify the port number, default 8080
+```
+$ PORT=8081 dev
 ```
 
 build a library
@@ -18,7 +22,7 @@ build a library
 ```
 $ build
 ```
-build vue project
+build a vue project
 
 ```
 $ build vue
@@ -60,10 +64,36 @@ module.exports = {
      * The path is relative to your working directory.
      */
     template: {
-        title: "fast-dev", // html title. Default: 'fast-dev'
+        title: "fast-dev", // Html title. Default: 'fast-dev'
         platform: "pc", // Set it to 'mobile' to add <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">.
-        js: ["library.js", ...], // Add <script src="library.js" />
+        favicon: "favicon.ico", // Relative to your working directory
+        js: ["library.js", ...], // Add <script src="library.js"></script>
         css: ["cssAssets.css", ...] // Add <link rel="stylesheet" href="cssAssets.css" />
     }
 }
+```
+## html template
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!--mobile meta-->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+
+    <title>Your-title</title>
+</head>
+<body>
+    <div id="app"></div>
+
+    <!--js/css assets will be insert here-->
+</body>
+
+</html>
+```
+## alias
+```js
+    // '@' is an alias for your working directory
+    require("@/assets/example.svg");
 ```

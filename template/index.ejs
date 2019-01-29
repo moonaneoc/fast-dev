@@ -13,7 +13,7 @@
     <div id="app"></div>
 
     <% for(var css of htmlWebpackPlugin.options.assets.css){ %><link rel="stylesheet" href="<%= css %>" /><% } %>
-    <% for(var js of htmlWebpackPlugin.options.assets.js){ %><script src="<%= js %>" /><% } %>
+    <% for(var js of htmlWebpackPlugin.options.assets.js){ %><script src="<%= js %>"></script><% } %>
 </body>
 
 </html>

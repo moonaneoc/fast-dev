@@ -101,6 +101,9 @@ exports.htmlConfig = function () {
             css: template.css || []
         }
     }
+    if (template.favicon) {
+        config.favicon = path.resolve(template.favicon);
+    }
 
     if (process.env.NODE_ENV === "production") {
         config.minify = {
